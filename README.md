@@ -17,6 +17,9 @@ eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)
 * group : the group for each sample  
 * test.method : a t-test or wilcoxon ramk sum test  
 * cutf : a significance level  
+it returns a list of results:
+* final.p : the adjusted p values 
+* dif.otus : the detected differential abundance otus
 
 
 
