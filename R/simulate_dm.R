@@ -29,9 +29,9 @@ simulation_dm=function(p,seed, N,control_pi, case_pi,control_theta,case_theta){
   parent1 = round(runif(1, 5000, 50000))
   parent2 = round(runif(1, 5000, 50000))
   set.seed(i*seed)
-  ntree_table[i, ] <- simPop(J=1, K=p, n=parent1, pi = control_pi, theta = the_eff_nt)$data
+  ntree_table[i, ] <- simPop(J=1, K=p, n=parent1, pi = control_pi, theta = control_theta)$data
   set.seed(i*(seed+1))
-  ntree_table[i+N,] <- simPop(J=1, K=p, n=parent2, pi = case_pi, theta = the_eff_nt)$data
+  ntree_table[i+N,] <- simPop(J=1, K=p, n=parent2, pi = case_pi, theta = case_theta)$data
   }
 colnames(ntree_table)=as.character(1:p)
 return(ntree_table)
