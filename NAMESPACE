@@ -1,6 +1,4 @@
 export(eBay)
 export(detec_otus)
 export(eBay_tree)
-export(simulation_dm)
-export(simulation_dtm)
-export(simulation_tree)
+
