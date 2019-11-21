@@ -1,0 +1,6 @@
+export(eBay)
+#export(eBay_tree)
+#export(detect.alg)
+#export(simulate_dm)
+#export(simulate_dtm)
+#export(simulate_tree)
