@@ -23,7 +23,7 @@ it returns a list of results:
 
 # Example
 
-The following function shows how to simulate data from a dirichlet multinomial distribution.
+The following function shows how to simulate data from a dirichlet multinomial distribution.  
 set.seed(1)  
 rand_pi <- runif(20)   
 control_pi = case_pi = rand_pi/sum(rand_pi)   
