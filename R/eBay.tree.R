@@ -114,7 +114,7 @@ eBay_tree=function(otu.data,tree,group,test.method,cutf){
 
 
 
-  p_table <- foreach(g=1:length(inter_node),.combine='cbind') %dopar% inter_func(g=g,tree=pru_tree,inter_node=inter_node,tree_table=tree_table,casecase,con=con,test.metho)
+  p_table <- foreach(g=1:length(inter_node),.combine='cbind') %dopar% inter_func(g=g,tree=pru_tree,inter_node=inter_node,tree_table=tree_table,case=case,con=con,test.method)
 ###obtain the p value of each internal node
   p.vector <- p_table[1,]
 
