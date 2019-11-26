@@ -56,7 +56,7 @@ ebay.res
 ## simulation from DTM
 First, we should generate a random tree
 ```r
-p <- 4- 
+p <- 40
 set.seed(1)
 tree <- simulate_tree(p)
 ```
