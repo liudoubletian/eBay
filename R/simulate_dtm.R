@@ -12,7 +12,7 @@
 #' @param case_theta the over-dispersion parameter
 #' @return dtm_table the otu table
 #' @export
-simulation_dtm <- function(p,seed = 1, N, tree,control_pi, case_pi,control_theta,case_theta){
+simulation_dtm <- function(p,tree, seed = 1, N, tree,control_pi, case_pi,control_theta,case_theta){
   library(dirmult)
   dtm_table <- matrix(NA, 2*N, p + tree$Nnode - 1)
   colnames(dtm_table) <- as.character(tree$edge[, 2])
