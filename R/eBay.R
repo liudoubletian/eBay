@@ -10,7 +10,7 @@
 #' @export
 eBay=function(otu.data,group,test.method,cutf){
 
-  sample.s<- nrow(otu.data)
+  sample.s <- nrow(otu.data)
   otu.n <- ncol(otu.data)
   case.s <- length(which(group == 0))
   con.s <- length(which(group == 1))
