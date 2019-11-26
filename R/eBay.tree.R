@@ -26,12 +26,12 @@ otu_index=function (tree){
   return(otu_mat)
 }
 
-inter_func=function(g,tree,inter_node,tree_table,case,con,test.method){
+inter_func <- function(g,tree,inter_node,tree_table,case,con,test.method){
   library(MGLM)
   sample.s <- nrow(tree_table)
 
-  sam_glm=sam_glm_wil=c()
-  sam_glm_ubay=sam_glm_wil_ubay=c()
+  sam_glm = sam_glm_wil = c()
+  sam_glm_ubay = sam_glm_wil_ubay = c()
 
 
   lit_tree <- tree$edge[which(tree$edge[,1]==inter_node[g]),2]
@@ -51,8 +51,6 @@ inter_func=function(g,tree,inter_node,tree_table,case,con,test.method){
   }
 
   exp_clr <- apply(exp_norm, 1, function(x){log2(x) - mean(log2(x))})
-
-
 
   if (test.method == "t"){
     exp_test <-  apply(exp_clr, 1, function(input){ t.test(input[case], input[con])$p.value})
@@ -127,7 +125,7 @@ eBay_tree=function(otu.data,tree,group,test.method,cutf){
 
 
   return(detec_result)
-  }
+}
 
 
 
