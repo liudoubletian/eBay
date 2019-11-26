@@ -1,0 +1,12 @@
+Package: eBay
+Type: Package
+Title: An empirical bayes approach to normalization
+Version: 0.1.0
+Author: Tiantian Liu
+Maintainer: Tiantian Liu <liu_double_tian@sjtu.edu.cn>
+Description: An empirical bayes approach to normalization and differential abundance testing for microbiome data
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: MGLM,dirmult,foreach,doParallel,ape
+RoxygenNote: 6.1.1
