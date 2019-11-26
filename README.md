@@ -6,13 +6,15 @@ In order to deal with several problems, we proposed a normalization method based
 [1] shows the statistical model in detail.
 
 # Installation
-
+```r
 install.packages("devtools")  
 devtools::install_github("liudoubletian/eBay")  
 library(eBay)  
-
+```
 # Basic Usage
-eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)   
+```r
+eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)
+```
 * `otu.data` : otu table which was a n*m matrix including n samples and m taxa
 * `group` : the group for each sample  
 * `test.method` : a t-test or wilcoxon ramk sum test  
@@ -25,19 +27,19 @@ it returns a list of results:
 # Example
 
 The following function shows how to simulate data from a dirichlet multinomial distribution.  
-
+```r
 set.seed(1)  
 rand_pi <- runif(20)   
 control_pi = case_pi = rand_pi/sum(rand_pi)   
 control_theta = case_theta = 0.1  
 group <- rep(c(0,1),each =20)  
 ntree_table <- simulation_dm(p=20,seed=1, N=20,control_pi, case_pi,control_theta,case_theta)  
-
+```
 We can run the eBay function to normalize the simulated data and return the detected differential abundance taxa.  
-
+```r
 ebay.res <- eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)  
 ebay.res  
-
+```
 
 
 
