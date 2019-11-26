@@ -8,5 +8,5 @@ Description: An empirical bayes approach to normalization and differential abund
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-Imports: MGLM,dirmult,foreach,doParallel,ape
+Imports: MGLM,dirmult,foreach,doParallel,ape,phyloseq
 RoxygenNote: 6.1.1
