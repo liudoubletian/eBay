@@ -54,20 +54,31 @@ ebay.res <- eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)
 ebay.res  
 ```
 ## simulation from DTM
+First, we should generate a random tree
+```r
+p <- 4- 
+set.seed(1)
+tree <- simulate_tree(p)
+```
 
 The following function shows how to simulate data from a Dirichlet-tree multinomial.  
 ```r
-set.seed(1)  
-rand_pi <- runif(20)   
-control_pi = case_pi = rand_pi/sum(rand_pi)   
-control_theta = case_theta = 0.1  
+set.seed(1)    
+control_pi = case_pi = c()
+for(j in (p+1):(p+tree$Nnode)){
+   set.seed(j)
+   random_pi <- runif(1,0.2,0.4)
+   control_pi[which(tree$edge[,1]==j)] <- c(random_pi, 1-random_pi)
+   case_pi[which(tree$edge[,1]==j)] <- c(random_pi, 1-random_pi)
+}
+control_theta = case_theta = rep(0.1, tree$Nnode) 
 group <- rep(c(0,1),each =20)  
-ntree_table <- simulation_dm(p=20,seed=1, N=20,control_pi, case_pi,control_theta,case_theta)  
+tree_table <- simulation_dm(p=40,seed=1, N=20,control_pi, case_pi,control_theta,case_theta)  
 ```
 We can run the eBay function to normalize the simulated data and return the detected differential abundance taxa.  
 ```r
-ebay.res <- eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)  
-ebay.res  
+ebay_tree.res <- eBay_tree(otu.data=tree_table, tree=tree, group=group, test.method="t", cutf=0.05)  
+ebay_tree.res  
 ```
 
 
