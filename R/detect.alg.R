@@ -67,26 +67,27 @@ detec_otus=function(p.val,tree_table,tree,group,test_method,cutf){
     leaf_node <- unique(unlist(leaf_node))
     lone_node <- setdiff(reject,leaf_node)
 
-
-    for (i in 1:length(lone_node)){
-        x <- lone_node[i]
-        if(x%in% 1: taxa.p){
-          p.val <- p.val
-        }else{
-          leaf_sub <- which(child_index[1: taxa.p,x]==1)
-          p.val[match(leaf_sub,names(p.val))]=p.val[match(x,names(p.val))]
-        }
+    if(length(lone_node)==0) { p.val <- p.val }
+    else{
+        for (i in 1:length(lone_node)){
+            x <- lone_node[i]
+            if(x%in% 1: taxa.p){
+              p.val <- p.val
+            }else{
+              leaf_sub <- which(child_index[1: taxa.p,x]==1)
+              p.val[match(leaf_sub,names(p.val))]=p.val[match(x,names(p.val))]
+            }
+         }
     }
-
     if(length(parent_nest)==0){
       final.p  <- p.adjust(p.val[match(1:taxa.p,names(p.val))])
       dif.otus <-  names(which(final.p<= cutf))
     }
     else{
       
-      all_qian=lapply(parent_nest,function(x) {
+      all_qian <- lapply(parent_nest,function(x) {
       if(x%in%1:taxa.p){
-        all_qian_sub=x
+        all_qian_sub <- x
       }else{
         all_qian_sub <- which(child_index[1:taxa.p,x]==1)
       }
