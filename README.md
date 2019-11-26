@@ -73,7 +73,7 @@ for(j in (p+1):(p+tree$Nnode)){
 }
 control_theta = case_theta = rep(0.1, tree$Nnode) 
 group <- rep(c(0,1),each =20)  
-tree_table <- simulation_dtm(p=40,seed=1, N=20,control_pi, case_pi,control_theta,case_theta)  
+tree_table <- simulation_dtm(p=40,tree, seed=1, N=20,control_pi, case_pi,control_theta,case_theta)  
 ```
 We can run the eBay_tree function to normalize the simulated data and return the detected differential abundance taxa.  
 ```r
