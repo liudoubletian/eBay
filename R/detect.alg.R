@@ -32,7 +32,7 @@ leaf_node_index <- function (tree){
 
 
 
-detec_otus <- function(p.val,tree_table,tree,group,test_method,cutf){
+detec_otus=function(p.val,tree_table,tree,group,test_method,cutf){
   library(doParallel)
   library(MGLM)
   taxa.p <- length(tree$tip.label)
@@ -50,9 +50,9 @@ detec_otus <- function(p.val,tree_table,tree,group,test_method,cutf){
   }
 
   if (length(reject)>=1) {
-
-    edge_dif <- lapply(1:taxa.p,function(x) { edge <- names(which(child_index[x,]==1)) return(intersect(edge,reject))})
-    
+    edge_dif=lapply(1:taxa.p,function(x) {
+      edge <- names(which(child_index[x,]==1))
+      return(intersect(edge,reject))})
     site <- which(lengths(edge_dif)>=2)
     nest_node <- sapply(edge_dif[site], function(v) return(min(v)))
     nest_node <- unique(nest_node)
@@ -60,12 +60,14 @@ detec_otus <- function(p.val,tree_table,tree,group,test_method,cutf){
     parent_nest <- tree$edge[match(nest_node,tree$edge[,2]),1]
 
 
-    leaf_node <- lapply(parent_nest,function(x) { sub_node <- which(child_index[,parent_nest]==1) return(sub_node)})
+    leaf_node <- lapply(parent_nest,function(x) {
+      sub_node <- which(child_index[,parent_nest]==1)
+      return(sub_node)})
+    
     leaf_node <- unique(unlist(leaf_node))
     lone_node <- setdiff(reject,leaf_node)
 
 
-    
     for (i in 1:length(lone_node)){
         x <- lone_node[i]
         if(x%in% 1: taxa.p){
@@ -74,26 +76,25 @@ detec_otus <- function(p.val,tree_table,tree,group,test_method,cutf){
           leaf_sub <- which(child_index[1: taxa.p,x]==1)
           p.val[match(leaf_sub,names(p.val))]=p.val[match(x,names(p.val))]
         }
-     }
     }
 
     if(length(parent_nest)==0){
       final.p  <- p.adjust(p.val[match(1:taxa.p,names(p.val))])
       dif.otus <-  names(which(final.p<= cutf))
-    }else{
-      all_qian <- lapply(parent_nest,function(x) {
+    }
+    else{
+      
+      all_qian=lapply(parent_nest,function(x) {
       if(x%in%1:taxa.p){
-          all_qian_sub=x
+        all_qian_sub=x
       }else{
-          all_qian_sub <- which(child_index[1:taxa.p,x]==1)
+        all_qian_sub <- which(child_index[1:taxa.p,x]==1)
       }
-     return(all_qian_sub)})
+      return(all_qian_sub)})
 
-     all_qian <- unique(unlist(all_qian))
-
-     exp_test <- c()
-
-     for(w in 1:length(parent_nest)){
+      all_qian <- unique(unlist(all_qian))
+      exp_test <- c()
+      for(w in 1:length(parent_nest)){
 
         parent_nest_node <- which(child_index[1:taxa.p,parent_nest[w]]==1)
         tree_table_sub <- tree_table[,match(parent_nest_node,colnames(tree_table))]
@@ -123,18 +124,15 @@ detec_otus <- function(p.val,tree_table,tree,group,test_method,cutf){
 
         names(exp_test_sub) <- as.character(parent_nest_node)
         exp_test <- append(exp_test,exp_test_sub)
-     }
+      }
 
       left_node <- setdiff(1:taxa.p,all_qian)
       left_pval <- p.val[match(left_node,names(p.val))]
-
       exp_test_final <- exp_test[match(all_qian,names(exp_test))]
-
       final.p <- p.adjust(c(exp_test_final,left_pval))
-
       dif.otus <- names(which(final.p < cutf))
-
-
-      }
+    }
+  }
   return(list(final.p,dif.otus))
 }
+
