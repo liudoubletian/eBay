@@ -12,7 +12,7 @@
 #' @param case_theta the over-dispersion parameter
 #' @return dtm_table the otu table
 #' @export
-simulation_dtm=function(p,seed = 1, N, tree,control_pi, case_pi,control_theta,case_theta){
+simulation_dtm <- function(p,seed = 1, N, tree,control_pi, case_pi,control_theta,case_theta){
   library(dirmult)
   dtm_table <- matrix(NA, 2*N, p + tree$Nnode - 1)
   colnames(dtm_table) <- as.character(tree$edge[, 2])
@@ -26,8 +26,7 @@ simulation_dtm=function(p,seed = 1, N, tree,control_pi, case_pi,control_theta,ca
         parent1 <- round(runif(1, 5000,50000))
         set.seed(i*j*(seed+1))
         parent2 <- round(runif(1, 5000,50000))
-      }
-      else{
+      }else{
         parent1 <- dtm_table[i, which(tree$edge[, 2] == j)]
         parent2 <- dtm_table[i + N, which(tree$edge[, 2] == j)]
       }
