@@ -45,7 +45,7 @@ detec_otus=function(p.val,tree_table,tree,group,test_method,cutf){
   child_index <- leaf_node_index(tree)
 
   if (length(reject)==0) {
-    final.p <- p.adjust(p.val)
+    final.p <- p.adjust(p.val,"BH")
     dif.otus <- NULL
   }
 
@@ -80,7 +80,7 @@ detec_otus=function(p.val,tree_table,tree,group,test_method,cutf){
          }
     }
     if(length(parent_nest)==0){
-      final.p  <- p.adjust(p.val[match(1:taxa.p,names(p.val))])
+      final.p  <- p.adjust(p.val[match(1:taxa.p,names(p.val))],"BH")
       dif.otus <-  names(which(final.p<= cutf))
     }
     else{
