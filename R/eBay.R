@@ -62,12 +62,12 @@ eBay=function(otu.data,group,test.method,cutf){
 
   if (test.method == "t"){
     exp_test <-  apply(exp_clr, 1, function(input){ t.test(input[case], input[con])$p.value})
-    final.p <- p.adjust(exp_test)
+    final.p <- p.adjust(exp_test,"BH")
     dif.otus <-  names(which(final.p < cutf))
   }
   if (test.method == "wilcoxon"){
     exp_test <- apply(exp_clr, 1, function(input){ wilcox.test(input[case], input[con])$p.value})
-    final.p <- p.adjust(exp_test)
+    final.p <- p.adjust(exp_test,"BH")
     dif.otus <-  names(which(final.p < cutf))
   }
 
