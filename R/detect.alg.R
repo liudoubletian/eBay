@@ -130,7 +130,7 @@ detec_otus=function(p.val,tree_table,tree,group,test_method,cutf){
       left_node <- setdiff(1:taxa.p,all_qian)
       left_pval <- p.val[match(left_node,names(p.val))]
       exp_test_final <- exp_test[match(all_qian,names(exp_test))]
-      final.p <- p.adjust(c(exp_test_final,left_pval))
+      final.p <- p.adjust(c(exp_test_final,left_pval),"BH")
       dif.otus <- names(which(final.p < cutf))
     }
   }
