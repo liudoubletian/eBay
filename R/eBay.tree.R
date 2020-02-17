@@ -95,8 +95,9 @@ eBay_tree=function(otu.data,tree,group,test.method,cutf){
   pru_data <- prune_taxa(keepOTUs, phy_data) ###prune the data set
 
   tree_table<- t(otu_table(pru_data))### final otu table
-  colnames(tree_table) <- as.character(1:taxa.p)
   taxa.p <- ncol(tree_table)
+  colnames(tree_table) <- as.character(1:taxa.p)
+  
 
   pru_tree <- phy_tree(pru_data)
   taxa_index <- otu_index(pru_tree)
