@@ -19,28 +19,29 @@ eBay=function(otu.data,group,test.method,cutf){
   con <- which(group == 1)
 
 
-  phy_data <- phyloseq(otu_table(as.matrix(t(otu.data)),taxa_are_rows=TRUE))##transfrom data to phyloseq structure
-  minobs<- 0
-  prevalence <- apply(as(otu_table(phy_data), "matrix"), 1, function(x, minobs) {
-    return(sum(x > minobs))
-  }, minobs)/sample.s
+  #phy_data <- phyloseq(otu_table(as.matrix(t(otu.data)),taxa_are_rows=TRUE))##transfrom data to phyloseq structure
+  #minobs<- 0
+  #prevalence <- apply(as(otu_table(phy_data), "matrix"), 1, function(x, minobs) {
+  # return(sum(x > minobs))
+  #}, minobs)/sample.s
 
-  kep_pre1 <- apply(as(otu_table(phy_data)[,case], "matrix"), 1, function(x) {
-    return(sum(x > 0))
-  })/case.s
+  #kep_pre1 <- apply(as(otu_table(phy_data)[,case], "matrix"), 1, function(x) {
+  #  return(sum(x > 0))
+  #})/case.s
 
-  kep_pre2 <- apply(as(otu_table(phy_data)[,con], "matrix"), 1, function(x) {
-    return(sum(x > 0))
-  })/con.s
+  #kep_pre2 <- apply(as(otu_table(phy_data)[,con], "matrix"), 1, function(x) {
+  #  return(sum(x > 0))
+  #})/con.s
 
-  keepOTUs <-  prevalence > 0.2& taxa_sums(t(phy_data)) > (0.5 *sample.s) #& kep_pre1>0 & kep_pre2>0
+  #keepOTUs <-  prevalence > 0.2& taxa_sums(t(phy_data)) > (0.5 *sample.s) #& kep_pre1>0 & kep_pre2>0
   ###filtering the otus
 
 
-  pru_data <- prune_taxa(keepOTUs, phy_data) ###prune the data set
+  #pru_data <- prune_taxa(keepOTUs, phy_data) ###prune the data set
 
-  ntree_table<- t(otu_table(pru_data))### final otu table
-
+  #ntree_table<- t(otu_table(pru_data))### final otu table
+  ntree_table<- otu.data
+  
   taxa.p <- ncol(ntree_table)
 
   rownames(ntree_table) <- as.character(1:sample.s)
