@@ -9,7 +9,7 @@
 #' group <- rep(c(0,1),each=46)
 #' ebay.res <- eBay(otu.table,group,test.method="t",cutf=0.05)
 #' @export
-eBay=function(otu.data,group,test.method,cutf){
+eBay=function(otu.data,group,cutf){
 
   sample.s<- nrow(otu.data)
   otu.n <- ncol(otu.data)
@@ -62,19 +62,21 @@ eBay=function(otu.data,group,test.method,cutf){
 
   exp_clr <- apply(exp_norm, 1, function(x){log2(x) - mean(log2(x))})
 
-  if (test.method == "t"){
-    exp_test <-  apply(exp_clr, 1, function(input){ t.test(input[case], input[con])$p.value})
-    final.p <- p.adjust(exp_test,"BH")
-    dif.otus <-  names(which(final.p < cutf))
-  }
-  if (test.method == "wilcoxon"){
-    exp_test <- apply(exp_clr, 1, function(input){ wilcox.test(input[case], input[con])$p.value})
-    final.p <- p.adjust(exp_test,"BH")
-    dif.otus <-  names(which(final.p < cutf))
-  }
+  exp_test_t <- apply(exp_clr, 1, function(input) {
+      t.test(input[case], input[con])$p.value
+    })
+  final.p.t <- p.adjust(exp_test_t,"BH")
+  dif.otus.t <- names(which(final.p.t < cutf))
+ 
+  exp_test_wil <- apply(exp_clr, 1, function(input) {
+      wilcox.test(input[case], input[con])$p.value
+    })
+  final.p.wil <- p.adjust(exp_test_wil,"BH")
+  dif.otus.wil <- names(which(final.p.wil < cutf))
 
+  return(list(final.p.t=final.p.t, dif.otus.t=dif.otus.t,
+              final.p.wil=final.p.wil,dif.otus.wil=dif.otus.wil))
 
-  return(list(final.p=final.p,dif.otus=dif.otus))
 }
 
 
