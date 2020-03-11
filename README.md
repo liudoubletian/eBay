@@ -1,9 +1,6 @@
  eBay (An empirical Bayes normalization method for microbiome data)
 
 # Introduction
-The characteristic of microbiome data were complicated: varied sequencing depth, lots of zeros, over-dispersion,
-a phylogenetic tree representing the relationship among taxa and compositionality.
-
 The characteristics of microbiome data are complicated: varied sequencing depth, lots of zeros, over-dispersion, a phylogenetic tree representing the relationship among taxa, and compositionality. In order to deal with these problems, we proposed an empirical Bayes normalization method called eBay. [1] shows the statistical model in detail.
 
 # Installation
@@ -84,6 +81,8 @@ Run the eBay_tree function to normalize the data and return a set of differentia
 ebay_tree.res <- eBay_tree(otu.data=tree_table, tree=tree, group=group, test.method="t", cutf=0.05)  
 ebay_tree.res  
 ```
+
+[1] Tiantian Liu, Tao Wang. (2020) An empirical Bayes approach to normalization and differential abundance testing for microbiome data (Under review).
 
 
 
