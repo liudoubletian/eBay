@@ -9,6 +9,24 @@
 #' @return p.value the p value for each taxa
 #' @examples
 #' @export
+######################################## a simulated example ###################################
+#p <- 40
+#set.seed(1)
+#tree <- simulate_tree(p)
+#set.seed(1)    
+#control_pi = case_pi = c()
+#for(j in (p+1):(p+tree$Nnode)){
+#   set.seed(j)
+#   random_pi <- runif(1,0.2,0.4)
+#   control_pi[which(tree$edge[,1]==j)] <- c(random_pi, 1-random_pi)
+#   case_pi[which(tree$edge[,1]==j)] <- c(random_pi, 1-random_pi)
+#}
+#control_theta = case_theta = rep(0.1, tree$Nnode) 
+#group <- rep(c(0,1),each =20)  
+#tree_table <- simulation_dtm(p=40,tree, seed=1, N=20,control_pi, case_pi,control_theta,case_theta)  
+
+
+###############################################################################################
 leaf_node_index=function (tree){
   p <- length(tree$tip.label)
   total.d <- p+tree$Nnode
