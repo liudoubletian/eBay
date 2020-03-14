@@ -6,8 +6,13 @@
 #' @return dif.otus the detected differential otus
 #' @return final.p the p value for each otu
 #' @examples
-#' group <- rep(c(0,1),each=46)
-#' ebay.res <- eBay(otu.table,group,test.method="t",cutf=0.05)
+#' set.seed(1)  
+#' rand_pi <- runif(20)   
+#' control_pi = case_pi = rand_pi/sum(rand_pi)   
+#' control_theta = case_theta = 0.1  
+#' group <- rep(c(0,1),each =20)  
+#' ntree_table <- simulation_dm(p=20,seed=1, N=20,control_pi, case_pi,control_theta,case_theta) 
+#' ebay.res <- eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)  
 #' @export
 eBay=function(otu.data,group,cutf){
 
@@ -19,34 +24,13 @@ eBay=function(otu.data,group,cutf){
   con <- which(group == 1)
 
 
-  #phy_data <- phyloseq(otu_table(as.matrix(t(otu.data)),taxa_are_rows=TRUE))##transfrom data to phyloseq structure
-  #minobs<- 0
-  #prevalence <- apply(as(otu_table(phy_data), "matrix"), 1, function(x, minobs) {
-  # return(sum(x > minobs))
-  #}, minobs)/sample.s
-
-  #kep_pre1 <- apply(as(otu_table(phy_data)[,case], "matrix"), 1, function(x) {
-  #  return(sum(x > 0))
-  #})/case.s
-
-  #kep_pre2 <- apply(as(otu_table(phy_data)[,con], "matrix"), 1, function(x) {
-  #  return(sum(x > 0))
-  #})/con.s
-
-  #keepOTUs <-  prevalence > 0.2& taxa_sums(t(phy_data)) > (0.5 *sample.s) #& kep_pre1>0 & kep_pre2>0
-  ###filtering the otus
-
-
-  #pru_data <- prune_taxa(keepOTUs, phy_data) ###prune the data set
-
-  #ntree_table<- t(otu_table(pru_data))### final otu table
   ntree_table<- otu.data
   
   taxa.p <- ncol(ntree_table)
 
   rownames(ntree_table) <- as.character(1:sample.s)
 
-  fit_glm <- MGLMfit(ntree_table, dist = "DM")
+  fit_glm <- MGLMfit(ntree_table, dist = "DM") ######using MGLMfit to estimate the parameter alpha
 
   ntree_para <- fit_glm@estimate
 
@@ -60,7 +44,7 @@ eBay=function(otu.data,group,cutf){
 
   colnames(exp_norm) <- colnames(ntree_table)
 
-  exp_clr <- apply(exp_norm, 1, function(x){log2(x) - mean(log2(x))})
+  exp_clr <- apply(exp_norm, 1, function(x){log2(x) - mean(log2(x))}) ###CLR transformation
 
   exp_test_t <- apply(exp_clr, 1, function(input) {
       t.test(input[case], input[con])$p.value
@@ -78,7 +62,6 @@ eBay=function(otu.data,group,cutf){
               final.p.wil=final.p.wil,dif.otus.wil=dif.otus.wil))
 
 }
-
 
 
 
