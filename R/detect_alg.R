@@ -24,9 +24,13 @@
 #control_theta = case_theta = rep(0.1, tree$Nnode) 
 #group <- rep(c(0,1),each =20)  
 #tree_table <- simulation_dtm(p=40,tree, seed=1, N=20,control_pi, case_pi,control_theta,case_theta)  
+#ebay_tree.res <- eBay_tree(otu.data=tree_table, tree=tree, group=group, test.method="t", cutf=0.05)
 
+  
+#######################################################################
+################an indicator table that represents the leaf nodes of each internal node####################
+#' @export
 
-###############################################################################################
 leaf_node_index=function (tree){
   p <- length(tree$tip.label)
   total.d <- p+tree$Nnode
@@ -50,6 +54,7 @@ leaf_node_index=function (tree){
 
 
 #' @export
+##################the algrithm for detecting differential abundant taxa########
 detec_otus=function(p.val,tree_table,tree,group,test.method,cutf){
   taxa.p <- length(tree$tip.label)
   sample.s <- nrow(tree_table)
