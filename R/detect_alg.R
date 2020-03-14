@@ -53,8 +53,11 @@ leaf_node_index=function (tree){
 
 
 
-#' @export
+
 ##################the algrithm for detecting differential abundant taxa########
+
+#' @export
+
 detec_otus=function(p.val,tree_table,tree,group,test.method,cutf){
   taxa.p <- length(tree$tip.label)
   sample.s <- nrow(tree_table)
