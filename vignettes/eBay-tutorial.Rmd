@@ -1,0 +1,106 @@
+---
+title: "<center> A tutorial on R package eBay</center>"
+output:
+  rmarkdown::html_vignette: default
+  pdf_document: default
+vignette: |
+  %\VignetteIndexEntry{eBay-tutorial} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+<center>Tiantian Liu<sup>1,3</sup>, Hongyu Zhao <sup>2,3</sup>, and Tao Wang <sup>1,3,4,*</sup></center>
+<center>1 Department of Bioinformatics and Biostatistics, Shanghai Jiao Tong University, China, </center>
+<center>2 Department of Biostatistics, Yale University, USA and</center>
+<center>3 SJTU-Yale Joint Center for Biostatistics, Shanghai Jiao Tong University, China</center>
+<center>4 MoE Key Lab of Artificial Intelligence, Shanghai Jiao Tong University</center>
+
+<center>November 26, 2019</center>
+
+
+# 1 Introduction
+High-throughout sequencing technologies and advanced bioinformatics tools are now routinely applied to microbiome studies. Most of the studies focus on the detection of differential abundance features (DAF) in microbial communities. However, the process of analyzing DAF is complicated by several challenges -- the varied sequencing depth and sparsity. We present a R package, eBay, that provides a novel normalization technique based on empirical bayes approach to addressed these challenges. We also extend our method by incorporating the phylogenetic tree into the normalization process. To model the real metagenomics data, we use Dirichlet-multinomial (DM) and Dirichlet-tree multinomial (DTM) distribution to simulate the count data. Functions of performing detection of DAF, several simulations and real dataset are provided.
+```{r, include = FALSE}
+options(warn=-1)
+
+```
+# 2 Running the eBay
+First, we need to install package dirmult, foreach, stats, doParallel, phyloseq, MGLM before we install eBay. To load eBay, type:
+```{r}
+#install.packages("devtools")  
+#devtools::install_github("liudoubletian/eBay")  
+library(eBay)  
+
+```
+## 2.1 A simulated example with data generated from DM model
+The following function will simulate microbiome data according to the DM model with the sequence depth drawn uniformly from 5000 to 50000.
+```{r}
+rm(list=ls())
+set.seed(2016)  
+p <- 20 ### number of taxa
+N <- 20 ### the number of samples in each group
+rand_pi <- runif(p)   
+control_pi = case_pi = rand_pi/sum(rand_pi) ##the proportions of each taxa  
+control_pi[4]=control_pi[4]-0.01;control_pi[6]=control_pi[6]+0.01;
+case_pi[4]=case_pi[4]+0.01;case_pi[6]=case_pi[6]-0.01; 
+##set OTU4 and OTU6 be different between case and control
+control_theta = case_theta = 0.1  ## the dispersion parameter in DM model
+group <- rep(c(0,1),each =20)  
+### an otu table with 40 rows and 20 colums
+ntree_table <- simulation_dm(p,seed=1, N=20,control_pi, case_pi,control_theta,case_theta) 
+```
+According to the above parameter settings, the simulation function returns an OTU table with two differential abundant OTUs.
+We can run the eBay function to implement the differential abundance testing.
+```{r}
+ebay.res<-eBay(otu.data=ntree_table,group=group,test.method="t",cutf=0.05,adj.m="BH")  
+ebay.res  
+```
+Here, the return results of eBay contain the final.p and dif.otus.
+
+## 2.2 A simulated example with data generated from DTM model
+The following function will simulate microbiome data generated from DTM model.
+If a phylogenetic tree is provided, our eBay can incorporate the tree into the normalization process and implement differential abuance testing.
+```{r}
+p <- 40
+set.seed(1)
+tree <- simulate_tree(p)  ###simulate a tree with 40 leaf nodes
+set.seed(1)    
+control_pi = case_pi = c()
+for(j in (p+1):(p+tree$Nnode)){
+   set.seed(j)
+   random_pi <- runif(1,0.2,0.4)
+   control_pi[which(tree$edge[,1]==j)] <- c(random_pi, 1-random_pi)
+   case_pi[which(tree$edge[,1]==j)] <- c(random_pi, 1-random_pi)
+}### the proportions of each node
+control_theta = case_theta = rep(0.1, tree$Nnode) ###the dispersion parameter
+group <- rep(c(0,1),each =20)  
+tree_table<-simulation_dtm(p=40,tree,seed=1,N=20,control_pi, case_pi,control_theta,case_theta)  
+```
+Run the eBay_tree function to normalize the data and return a set of differential abundant taxa.
+```{r}
+ebay_tree.res<-eBay_tree(otu.data=tree_table,tree=tree,group=group,test.method="t", cutf=0.05,adj.m="BH")  
+ebay_tree.res  
+```
+
+# 3 Real data analysis
+Let's try anohter example on the real data. To explore the association between severe acute malnutrition (SAM) and microbiota, [1] conducted a study of 996 stool samples collected monthly from 50 healthy Bangladeshi children during the first 2 years of life.
+We restricted our analysis to 12 to 18-month-old children which includs 20 healthy children and 27 children with SAM. We further filtered bacterial taxa with prevalance less than 20%, resulting in 50 taxa. Here, we run the eBay and eBay_tree function to the real data.
+```{r}
+### load data
+data(rep_tree)
+data(sam_table)
+tree <- rep_tree
+ntree_table<- sam_table
+p <- length(tree$tip.label)
+colnames(ntree_table)=as.character(1:p)
+group <- c(rep(0,27),rep(1,20)) 
+eBay.res <- eBay(otu.data=ntree_table, group=group, cutf=0.05, test.methods="t",adj.m="BH") 
+eBay.res
+ebay_tree.t.res<-eBay_tree(otu.data=ntree_table,tree=tree,adj.m="BH",group=group, test.method="t",cutf=0.05)  
+ebay_tree.t.res
+```
+Here we report the p values and differential abundant OTUs. 
