@@ -12,7 +12,7 @@ library(eBay)
 # Basic Usage
 ## normalization in the absence of a phylogenetic tree
 ```r
-eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)
+eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05,adj.m="BH")
 ```
 * `otu.data` : an OTU table with n rows (samples) and m columns (taxa)
 * `group` : a n-vector of group indicators
@@ -25,7 +25,7 @@ it returns a list of results:
 
 ## phylogeny-aware empirical Bayes normalization
 ```r
-eBay_tree(otu.data=tree_table,tree=tree,group=group,test.method="t",cutf=0.05)
+eBay_tree(otu.data=tree_table,tree=tree,group=group,test.method="t",cutf=0.05,adj.m="BH")
 ```
 * `otu.data` : an OTU table with n rows (samples) and m columns (taxa)
 * `tree` : a phylogenetic tree among m taxa
@@ -51,7 +51,7 @@ ntree_table <- simulation_dm(p=20,seed=1, N=20,control_pi, case_pi,control_theta
 Run the eBay function to normalize the data and return a set of differentially abundant taxa.
 
 ```r
-ebay.res <- eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05)  
+ebay.res <- eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05,adj.m="BH")  
 ebay.res  
 ```
 ## simulation from DTM
@@ -78,7 +78,7 @@ tree_table <- simulation_dtm(p=40,tree, seed=1, N=20,control_pi, case_pi,control
 ```
 Run the eBay_tree function to normalize the data and return a set of differentially abundant taxa.
 ```r
-ebay_tree.res <- eBay_tree(otu.data=tree_table, tree=tree, group=group, test.method="t", cutf=0.05)  
+ebay_tree.res <- eBay_tree(otu.data=tree_table, tree=tree, group=group, test.method="t", cutf=0.05,adj.m="BH")  
 ebay_tree.res  
 ```
 
