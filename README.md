@@ -18,6 +18,7 @@ eBay(otu.data=ntree_table, group=group, test.method="t", cutf=0.05,adj.m="BH")
 * `group` : a n-vector of group indicators
 * `test.method` : t-test or Wilcoxon rank sum test
 * `cutf` : level of significance
+* `adj.m` : the adjustment methods for p-values
 
 it returns a list of results:  
 * `final.p` : the adjusted p values 
@@ -32,6 +33,7 @@ eBay_tree(otu.data=tree_table,tree=tree,group=group,test.method="t",cutf=0.05,ad
 * `group` : a n-vector of group indicators
 * `test.method` : t-test or Wilcoxon rank sum test
 * `cutf` : level of significance
+* `adj.m` : the adjustment methods for p-values
 
 it returns a list of results:  
 * `final.p` : the adjusted p values 
@@ -83,7 +85,6 @@ ebay_tree.res
 ```
 
 [1] Tiantian Liu, Tao Wang. (2020) An empirical Bayes approach to normalization and differential abundance testing for microbiome data (Under review).
-
 
 
 
