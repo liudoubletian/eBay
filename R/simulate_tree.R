@@ -6,6 +6,7 @@
 #' set.seed(1)
 #' tree <- simulate_tree(p)
 #' @export
+#####It was mainly from the function "rtee" in package ape with a little change####
 simulate_tree = function (n) {
   foo <- function(n, pos) {
     n1 <- sample.int(n - 1, 1, FALSE, NULL)
