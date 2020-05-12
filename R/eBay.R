@@ -36,10 +36,13 @@ eBay=function(otu.data,group,cutf,test.methods,adj.m){
   taxa.p <- ncol(ntree_table)
   rownames(ntree_table) <- as.character(1:sample.s)
 
-  fit_glm <- MGLMfit(ntree_table, dist = "DM")  ####estimate the parameter alpha
-  ntree_para <- fit_glm@estimate
-
-  ntree_para_mat <- matrix(rep(ntree_para, sample.s),byrow = TRUE,ncol = taxa.p)
+  resp <- as(ntree_table,"matrix")
+  coe<-matrix(0,1,ncol(resp))
+  B_e <- try(MGLMreg(resp~1, dist="DM")@coefficients, silent=TRUE)
+  coe <- B_e
+  gr <- matrix(rep(1,nrow(ntree_table)))
+  alpha_e=exp(gr%*%coe)
+  ntree_para_mat <- alpha_e
 
   exp_norm <- matrix(NA,ncol=taxa.p,nrow=sample.s)
 
