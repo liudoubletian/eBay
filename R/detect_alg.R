@@ -85,12 +85,20 @@ detec_otus= function(p.val,tree_table,tree,group,test.method,cutf,adj.m){
         tree_table_sub <- tree_table[,match(parent_nest_node,colnames(tree_table))]
 
 
-        fit_glm <- MGLMfit(data.frame(tree_table_sub),dist = "DM")
-        tree_para <- fit_glm@estimate
+       resp <- as(tree_table_sub,"matrix")
+        coe<-matrix(0,1,ncol(resp))
+        B_e <- try(MGLMreg(resp~1, dist="DM")@coefficients, silent=TRUE)
+        if(inherits(B_e,"try-error")){
+          B_e <- try(MGLMfit(tree_table_sub, dist="DM")@estimate, silent=TRUE)
+          tree_para_mat <- rbind(matrix(rep(B_e, sample.s),byrow = TRUE,ncol = ncol(tree_table_sub)))
+        }
+        else{
+          coe <- B_e
+          gr <- matrix(rep(1,nrow(tree_table_sub)))
+          alpha_e <- exp(gr%*%coe)
+          tree_para_mat <- alpha_e
+        }
 
-
-
-        tree_para_mat <- rbind(matrix(rep(tree_para, sample.s),byrow = TRUE,ncol = length(parent_nest_node)))
         exp_norm <- matrix(NA,ncol= length(parent_nest_node),nrow=sample.s)
 
         for (n in 1:sample.s) {
