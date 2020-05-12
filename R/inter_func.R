@@ -14,10 +14,19 @@ inter_func=function(g,tree,tree_table,group,test.method){
   colnames(lit_tree_table) <- as.character(lit_tree)
   taxa.p <- ncol(lit_tree_table)
 
-  fit_glm <- MGLMfit(data.frame(lit_tree_table),dist = "DM")
-  tree_para <- fit_glm@estimate
-
-  tree_para_mat <- rbind(matrix(rep(tree_para, sample.s),byrow = TRUE,ncol = taxa.p))
+  resp <- as(lit_tree_table,"matrix")
+    coe<-matrix(0,1,ncol(resp))
+    B_e <- try(MGLMreg(resp~1, dist="DM")@coefficients, silent=TRUE)
+    if(inherits(B_e,"try-error")){
+    B_e <- MGLMfit(lit_tree_table, dist="DM")@estimate
+    tree_para_mat <- rbind(matrix(rep(B_e, sample.s),byrow = TRUE,ncol = ncol(lit_tree_table)))
+    }
+    else{
+      coe=B_e
+      gr <- matrix(rep(1,nrow(lit_tree_table)))
+      alpha_e=exp(gr%*%coe)
+      tree_para_mat <- alpha_e
+    }
 
   exp_norm <- matrix(NA,ncol=taxa.p,nrow=sample.s)
 
