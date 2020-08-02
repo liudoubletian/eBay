@@ -25,6 +25,7 @@
 #' @importFrom MGLM  MGLMfit
 #' @import stats
 eBay=function(otu.data,group,cutf,test.methods,adj.m){
+  library(MGLMreg)
   sample.s<- nrow(otu.data)
   otu.n <- ncol(otu.data)
   case.s <- length(which(group == 0))
