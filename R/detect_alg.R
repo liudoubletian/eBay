@@ -16,10 +16,12 @@
 #' leaf_ind <- leaf_node_index(tree)
 #' @export
 #' @importFrom MGLM  MGLMfit
+#' @importFrom MGLM  MGLMreg
 #' @import stats
 #' @export
 ##################the algrithm for detecting differential abundant taxa########
 detec_otus= function(p.val,tree_table,tree,group,test.method,cutf,adj.m){
+  library(MGLM)
   taxa.p <- length(tree$tip.label)
   sample.s <- nrow(tree_table)
   case <- which(group == 0)
