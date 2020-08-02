@@ -1,6 +1,7 @@
 #' @export
 #### estimate the parameter alpha on each internal node and conduct normalization####
 inter_func=function(g,tree,tree_table,group,test.method){
+  library(MGLMreg)
   sample.s <- nrow(tree_table)
   case <- which(group == 0)
   con <- which(group == 1)
