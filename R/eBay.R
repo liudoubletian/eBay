@@ -23,9 +23,10 @@
 #' cutf=0.05,adj.m="BH")
 #' @export
 #' @importFrom MGLM  MGLMfit
+#' @importFrom MGLM  MGLMreg
 #' @import stats
 eBay=function(otu.data,group,cutf,test.methods,adj.m){
-  library(MGLMreg)
+  library(MGLM)
   sample.s<- nrow(otu.data)
   otu.n <- ncol(otu.data)
   case.s <- length(which(group == 0))
