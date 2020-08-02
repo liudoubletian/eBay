@@ -16,7 +16,6 @@
 #' leaf_ind <- leaf_node_index(tree)
 #' @export
 #' @importFrom MGLM  MGLMfit
-#' @importFrom MGLM  MGLMreg
 #' @import stats
 #' @export
 ##################the algrithm for detecting differential abundant taxa########
