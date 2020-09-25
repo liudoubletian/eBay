@@ -60,7 +60,7 @@ eBay=function(otu.data,group,cutf,test.methods,adj.m){
   })
   final.p.t <- p.adjust(exp_test_t,adj.m)
   dif.otus.t <- which( final.p.t< cutf)
-  return(list(final.p=final.p.t, dif.otus=dif.otus.t))
+  return(list(bay.norm = exp_norm,final.p=final.p.t, dif.otus=dif.otus.t))
 
  }
   if(test.methods=="wilcoxon"){
@@ -69,6 +69,6 @@ eBay=function(otu.data,group,cutf,test.methods,adj.m){
   })
   final.p.wil <- p.adjust(exp_test_wil,adj.m)
   dif.otus.wil <-which(final.p.wil < cutf)
-  return(list(final.p=final.p.wil,dif.otus=dif.otus.wil))
+  return(list(bay.norm = exp_norm,final.p=final.p.wil,dif.otus=dif.otus.wil))
 }
 }
